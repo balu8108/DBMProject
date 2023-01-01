@@ -1,4 +1,5 @@
 # DBMProject
+used MVVM, navigation architecture
 ![image](https://user-images.githubusercontent.com/20845081/210185884-788482bc-137d-4595-a7d3-12dd8360c75a.png)
 ![image](https://user-images.githubusercontent.com/20845081/210185915-ccb716ff-09b2-499d-a3af-c1fc598731f0.png)
 
