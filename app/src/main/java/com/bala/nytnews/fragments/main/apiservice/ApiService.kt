@@ -9,7 +9,6 @@ import com.bala.nytnews.NytApplication
 import com.bala.nytnews.fragments.main.data.NewsItem
 import com.bala.nytnews.fragments.main.utils.NewsItemJsonParser
 import org.json.JSONArray
-import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bala.nytnews.R
 import com.bala.nytnews.databinding.MainFragmentBinding
 import com.bala.nytnews.fragments.main.adapters.LoaderStateAdapter
