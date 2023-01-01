@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NYT news</string>
+    <string name="button_retry">Retry</string>
+    <string name="label_error">Error</string>
+</resources>
