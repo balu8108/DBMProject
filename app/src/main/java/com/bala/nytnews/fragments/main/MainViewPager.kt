@@ -6,17 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.paging.filter
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bala.nytnews.R
-import com.bala.nytnews.databinding.MainFragmentBinding
+import com.bala.nytnews.fragments.main.adapters.LoaderStateAdapter
 import com.bala.nytnews.fragments.main.adapters.NewsListAdapter
-import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import com.bala.nytnews.databinding.ViewPagerLayoutBinding
 
-class MainFragment : Fragment() {
+class MainViewPager : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -24,13 +27,13 @@ class MainFragment : Fragment() {
 
     private val viewBinding
         get() = _viewBinding!!
-    private var _viewBinding: MainFragmentBinding? = null
+    private var _viewBinding: ViewPagerLayoutBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _viewBinding = MainFragmentBinding.inflate(inflater)
+        _viewBinding = ViewPagerLayoutBinding.inflate(inflater)
         return viewBinding.root
     }
 
@@ -38,6 +41,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        initObservers()
     }
 
     private fun init() {
@@ -46,31 +50,26 @@ class MainFragment : Fragment() {
         })) { id, isFavorite ->
             viewModel.updateNewsItem(id, isFavorite)
         }
-
-        viewBinding.viewPager.adapter = MainFragmentViewPagerAdapter(requireActivity())
-        TabLayoutMediator(viewBinding.tabs, viewBinding.viewPager) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = "ALL"
-                }
-                1 -> {
-                    tab.text = "FAVORITES"
-                }
-            }
-        }.attach()
+        viewBinding.newsList.adapter = newsListAdapter.withLoadStateFooter(LoaderStateAdapter {})
     }
 
-    private inner class MainFragmentViewPagerAdapter(fm: FragmentActivity) :
-        FragmentStateAdapter(fm) {
-        override fun getItemCount(): Int {
-            return 2
-        }
+    @ExperimentalPagingApi
+    private fun initObservers() {
+        val isFavourite = arguments?.getBoolean("isFavorite")
 
-        override fun createFragment(position: Int): Fragment {
-            return MainViewPager().apply {
-                arguments = bundleOf("isFavorite" to (position == 1))
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getNewsItems().collectLatest { lNewsItems ->
+                if (isFavourite == true) {
+                    newsListAdapter.submitData(lNewsItems.filter {
+                        isFavourite == true && it.favorite
+                    })
+                } else {
+                    newsListAdapter.submitData(lNewsItems)
+                }
             }
         }
+
+        viewBinding.newsList.layoutManager = GridLayoutManager(context, 2)
 
     }
 
