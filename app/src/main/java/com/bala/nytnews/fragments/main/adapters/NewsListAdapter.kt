@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 
 class NewsListAdapter(
     private val context: Context,
-    val listener: (String) -> Unit,
+    val listener: (NewsItem) -> Unit,
     val favoriteListener: (Long, Boolean) -> Unit
 ) : PagingDataAdapter<NewsItem, RecyclerView.ViewHolder>(DiffCallBackNewsItems()) {
 
@@ -22,7 +22,7 @@ class NewsListAdapter(
         RecyclerView.ViewHolder(viewBinding.root) {
         init {
             viewBinding.newItemContainer.setOnClickListener {
-                getItem(bindingAdapterPosition)?.let { lNewsItem -> listener(lNewsItem.url) }
+                getItem(bindingAdapterPosition)?.let { lNewsItem -> listener(lNewsItem) }
             }
 
             viewBinding.snippet.setOnClickListener {

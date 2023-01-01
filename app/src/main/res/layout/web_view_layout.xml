@@ -37,14 +37,64 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <WebView
-        android:id="@+id/web_view"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/action_bar" />
+        app:layout_constraintTop_toBottomOf="@id/action_bar"
+        app:layout_constraintVertical_bias="0">
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/news_item_place_holder" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="dfkjdflkjsdsdisdkjswlkdsdijsd"
+            android:textColor="@color/black_87"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/snippet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/black_87"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:text="Favorite"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimary"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:text="Favorite"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,8 +44,8 @@ class MainFragment : Fragment() {
     }
 
     private fun init() {
-        newsListAdapter = NewsListAdapter(requireContext(),({ url ->
-            findNavController().navigate(R.id.webViewFragment, bundleOf("url" to url))
+        newsListAdapter = NewsListAdapter(requireContext(),({ newsItem ->
+            findNavController().navigate(R.id.webViewFragment, bundleOf("newsItem" to newsItem))
         })){id, isFavorite ->
             viewModel.updateNewsItem(id,isFavorite)
         }
