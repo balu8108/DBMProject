@@ -10,11 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.filter
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bala.nytnews.R
 import com.bala.nytnews.databinding.MainFragmentBinding
 import com.bala.nytnews.fragments.main.adapters.LoaderStateAdapter
 import com.bala.nytnews.fragments.main.adapters.NewsListAdapter
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -43,12 +45,49 @@ class MainFragment : Fragment() {
         initObservers()
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     private fun init() {
         newsListAdapter = NewsListAdapter(requireContext(),({ newsItem ->
             findNavController().navigate(R.id.webViewFragment, bundleOf("newsItem" to newsItem))
         })){id, isFavorite ->
             viewModel.updateNewsItem(id,isFavorite)
         }
+        viewBinding.tabs.addTab(viewBinding.tabs.newTab().setText("All"))
+        viewBinding.tabs.addTab(viewBinding.tabs.newTab().setText("Favorites"))
+        viewBinding.tabs.tabGravity = TabLayout.GRAVITY_FILL;
+        viewBinding.tabs.addOnTabSelectedListener(
+            object : TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    if (tab != null) {
+                        if(tab.text == "All"){
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                viewModel.getNewsItems().collectLatest { lNewsItems ->
+                                    newsListAdapter.submitData(lNewsItems)
+                                }
+                            }
+                        } else{
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                viewModel.getNewsItems().collectLatest { lNewsItems ->
+                                    newsListAdapter.submitData(lNewsItems.filter {
+                                        it.favorite
+                                    })
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    //TODO("Not yet implemented")
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    //TODO("Not yet implemented")
+                }
+
+            }
+        )
         viewBinding.newsList.adapter = newsListAdapter.withLoadStateFooter(LoaderStateAdapter {})
     }
 

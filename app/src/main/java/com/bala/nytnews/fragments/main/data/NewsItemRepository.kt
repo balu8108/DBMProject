@@ -50,8 +50,8 @@ class NewsItemRepository {
         ).flow
     }
 
-    suspend fun updateNewsItem(id:Long, isFavorite:Boolean){
-        AppDatabase.getInstance().getNewsItemDao().updateNewsItem(id,isFavorite)
+    suspend fun updateNewsItem(id: Long, isFavorite: Boolean) {
+        AppDatabase.getInstance().getNewsItemDao().updateNewsItem(id, isFavorite)
     }
 
 }
