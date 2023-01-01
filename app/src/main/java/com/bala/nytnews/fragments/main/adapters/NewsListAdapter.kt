@@ -27,14 +27,10 @@ class NewsListAdapter(
 
             viewBinding.snippet.setOnClickListener {
                 getItem(bindingAdapterPosition)?.let { lNewsItem -> favoriteListener(lNewsItem.id,true) }
-                viewBinding.snippet.isVisible = false
-                viewBinding.date.isVisible = true
             }
 
             viewBinding.date.setOnClickListener {
                 getItem(bindingAdapterPosition)?.let { lNewsItem -> favoriteListener(lNewsItem.id,false) }
-                viewBinding.snippet.isVisible = true
-                viewBinding.date.isVisible = false
             }
         }
     }
@@ -72,9 +68,9 @@ class NewsListAdapter(
 
     class DiffCallBackNewsItems : DiffUtil.ItemCallback<NewsItem>() {
         override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem) =
-            oldItem.title == newItem.title
+            oldItem == newItem
 
         override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem) =
-            oldItem.title == newItem.title
+            oldItem == newItem
     }
 }

@@ -58,12 +58,8 @@ class MainViewPager : Fragment() {
         val isFavourite = arguments?.getBoolean("isFavorite")
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getNewsItems().collectLatest { lNewsItems ->
-                if (isFavourite == true) {
-                    newsListAdapter.submitData(lNewsItems.filter {
-                        isFavourite == true && it.favorite
-                    })
-                } else {
+            if (isFavourite != null) {
+                viewModel.getNewsItems(isFavourite).collectLatest { lNewsItems ->
                     newsListAdapter.submitData(lNewsItems)
                 }
             }

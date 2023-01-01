@@ -14,6 +14,9 @@ interface NewsItemDao {
     @Query("SELECT * FROM newsitem")
     fun getAllNewsItems(): PagingSource<Int, NewsItem>
 
+    @Query("SELECT * FROM newsitem WHERE favorite = 1")
+    fun getFavorites(): PagingSource<Int, NewsItem>
+
     @Query("DELETE FROM newsitem")
     suspend fun clearAllNewsItems()
 

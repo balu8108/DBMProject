@@ -13,7 +13,9 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
 
     @ExperimentalPagingApi
-    fun getNewsItems(): Flow<PagingData<NewsItem>> {
+    fun getNewsItems(isFavorite: Boolean): Flow<PagingData<NewsItem>> {
+        if (isFavorite)
+            return NewsItemRepository.getInstance().letFavoritesDb().cachedIn(viewModelScope)
         return NewsItemRepository.getInstance().letNewsItemsDb().cachedIn(viewModelScope)
     }
 

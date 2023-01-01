@@ -50,6 +50,16 @@ class NewsItemRepository {
         ).flow
     }
 
+    fun letFavoritesDb(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<NewsItem>> {
+
+        val lPagingSourceConfig = { AppDatabase.getInstance().getNewsItemDao().getFavorites() }
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = lPagingSourceConfig,
+            remoteMediator = NewsItemMediator()
+        ).flow
+    }
+
     suspend fun updateNewsItem(id: Long, isFavorite: Boolean) {
         AppDatabase.getInstance().getNewsItemDao().updateNewsItem(id, isFavorite)
     }
